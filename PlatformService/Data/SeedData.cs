@@ -19,6 +19,7 @@ namespace PlatformService.Data
         }
         public static void PopulateValue(AppDbContext dbContext)
         {
+            Console.WriteLine("Sedding data ---->");
             if (!dbContext.PlatForms.Any())
             {
                 dbContext.AddRange(
@@ -27,6 +28,7 @@ namespace PlatformService.Data
                     );
                 dbContext.SaveChanges();
             }
+            Console.WriteLine("Sedding data completed");
         }
     }
 }

@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PlatformService.Data;
+using PlatformService.Extension;
+using PlatformService.Mapper;
 
 namespace PlatformService
 {
@@ -16,8 +18,6 @@ namespace PlatformService
         }
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(config =>
@@ -26,20 +26,17 @@ namespace PlatformService
             });
             services.AddControllers();
             services.AddScoped<IPlatformRepository, PlatformRepository>();
+            services.AddAutoMapper(typeof(PlatformProfile));
+            services.AddHttpContextAccessor();
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
-
+            app.UseMyMiddleware();
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -49,4 +46,5 @@ namespace PlatformService
             Seed.SeedData(app);
         }
     }
+
 }

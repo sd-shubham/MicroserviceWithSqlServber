@@ -13,12 +13,17 @@ namespace PlatformService
     {
         public static void Main(string[] args)
         {
-            new Test().Split();
+
             CreateHostBuilder(args).Build().Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+            .ConfigureLogging(logging =>
+        {
+            logging.ClearProviders();
+            logging.AddConsole();
+        })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
@@ -30,7 +35,7 @@ namespace PlatformService
         {
             var str = "{1:F01AINBEGC0XXXX          }{2:I202BCDEEGC0XXXXN}{3:{103:PEG}{108:sami}}{4::20:test/SAMI:21:TEST:32A:040124USD1,00:58A:BCDEEGCAXXX-}";
             var requiredStr = GetSubString(str);
-            if(requiredStr.Length > 0)
+            if (requiredStr.Length > 0)
             {
                 var stringArr = requiredStr.ToString().ToArray();
 
